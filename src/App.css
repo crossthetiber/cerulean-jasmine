@@ -26,3 +26,17 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+h2 {
+  color: red;
+}
+
+h3 {
+  color: blue;
+}
+
+.wine-list {
+  list-style: none;
+  display: list-item block;
+  text-align: left;
+}
