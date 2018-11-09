@@ -1,32 +1,41 @@
 import React from 'react';
-import { directoryBaseUrl } from '../constants/directoryBaseUrl'
-const perEmployee = 'employee/json/by_netid/rfox2'
-const url = encodeURI(`${directoryBaseUrl}${perEmployee}`)
+import { connect } from 'react-redux';
+import { updatePersonAction, fetchPeopleAction } from '../store/actions/personActions';
 
 class Person extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { person: '' };
-
-    fetch(url, {
-      mode: 'cors',
-    }).then(response => response.json())
-      .then(json => {this.setState({person: json[0]})})
-      .catch(error => console.log(error));
   }
 
-  showAddress() {
-    alert(this.state.person.mail_addr);
+  componentWillMount = () => {
+    this.props.fetchPeople();
+  }
+
+  showPerson(index) {
+    this.props.onUpdatePerson('Bozo', index);
+    // alert(this.props.employees[0].fname);
   }
 
   render() {
+    console.log(this.props);
+
     return <div>
              <ul>
-              <li onClick={() => this.showAddress()}>{this.state.person.fname}</li>
-              <li>{this.state.person.lname}</li>
+               <li onClick={() => this.showPerson(1)}>Click here</li>
+               {/* <li>{this.props.persona.people[0].fname}</li> */}
              </ul>
           </div>;
   }
 }
 
-export default Person;
+const mapStateToProps = state => ({
+    employees: state.people
+});
+
+const mapActionToProps = {
+      onUpdatePerson: updatePersonAction,
+      fetchPeople: fetchPeopleAction
+};
+
+export default connect(mapStateToProps, mapActionToProps)(Person);
